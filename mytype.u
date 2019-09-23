@@ -1,0 +1,33 @@
+
+type MyType a = One a | Two a a
+
+namespace mytype where
+
+    wrap1 : a -> MyType a
+    wrap1 x = 
+        One x
+
+    wrap2 : a -> a -> MyType a
+    wrap2 x y = 
+        Two x y
+
+
+use .builtin
+use MyType MyType One Two
+
+namespace naturals where
+
+    wrapIncNat : MyType Nat -> MyType Nat
+    wrapIncNat n =
+        case n of
+            One x -> n' = increment x
+                     One n'
+            Two x y -> x' = increment x
+                       y' = increment y
+                       Two x' y'
+
+> x = wrap1 42
+> wrapIncNat x
+
+> x2 = wrap2 42 43
+> wrapIncNat x2
